@@ -53,7 +53,7 @@ public class Main {
 	 * @throws TransformerException
 	 */
 	public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException, TransformerException {
-		JCommander jCommander = new JCommander();
+		JCommander jCommander = new JCommander();s
 		jCommander.addCommand(commandVeraPDF);
 		jCommander.parse(args);
 
