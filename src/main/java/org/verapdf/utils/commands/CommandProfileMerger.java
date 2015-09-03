@@ -3,6 +3,9 @@ package org.verapdf.utils.commands;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author Evgeniy Muravitskiy
  */
@@ -12,8 +15,9 @@ public class CommandProfileMerger extends Command{
 	public static final String DEFAULT_OUTPUT_PATH = "result.xml";
 	public static final String DEFAULT_MODEL = "org.verapdf.model.PDFA1a";
 	public static final String DEFAULT_NAMESPACE = "http://www.verapdf.org/ValidationProfile";
-	public static final String DEFAULT_NAME_TAG_VALUE = "ISO 19005-1:2005";
-	public static final String DEFAULT_DESCRIPTION_TAG_VALUE = "Rules for validation PDF files";
+	public static final String DEFAULT_NAME_TAG_VALUE = "PDF/A-1B validation profile";
+	public static final String DEFAULT_DESCRIPTION_TAG_VALUE =
+			"Validation rules against ISO 19005-1:2005, Cor.1:2007 and Cor.2:2011";
 	public static final String DEFAULT_CREATOR_TAG_VALUE = "veraPDF Consortium";
 
 	@Parameter(names = "--merge")
@@ -32,6 +36,9 @@ public class CommandProfileMerger extends Command{
 
 	@Parameter(names = "--output", description = "path to result xml profile. just 1 argument - path to file")
 	private String outputPath = DEFAULT_OUTPUT_PATH;
+
+	@Parameter(names = "--exclude", variableArity = true)
+	private List<String> exclude = new ArrayList<>();
 
 	@Parameter(names = "--model", description = "model type for validation. just 1 argument - string")
 	private String model = DEFAULT_MODEL;
@@ -92,6 +99,14 @@ public class CommandProfileMerger extends Command{
 
 	public void setOutputPath(String outputPath) {
 		this.outputPath = outputPath;
+	}
+
+	public List<String> getExclude() {
+		return exclude;
+	}
+
+	public void setExclude(List<String> exclude) {
+		this.exclude = exclude;
 	}
 
 	public String getModel() {

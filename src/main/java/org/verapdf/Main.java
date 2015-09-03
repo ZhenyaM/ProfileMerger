@@ -3,18 +3,24 @@ package org.verapdf;
 import com.beust.jcommander.JCommander;
 import org.verapdf.merger.ProfileMerger;
 import org.verapdf.transformer.HtmlTransformer;
-import org.xml.sax.SAXException;
 import org.verapdf.utils.commands.CommandProfileMerger;
-import org.verapdf.utils.config.VeraPDFTransformConfig;
 import org.verapdf.utils.config.VeraPDFMergerConfig;
-import org.verapdf.utils.config.Input;
-import org.verapdf.utils.filter.XMLFileFilter;
+import org.verapdf.utils.config.VeraPDFTransformConfig;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.IOException;
 
 /**
+ * Module for creating validation profile from several
+ * profiles and transform validation profile to html
+ * table. Validation profile considered to be valid
+ * for merge if root tag is {@code <profile>} and this
+ * tag contains {@code <rules>} (which contain {@code
+ * <rule>} tag) and(or) {@code variables} (which contain
+ * {@code <variable>} tag).
+ *
  * @author Evgeniy Muravitskiy
  */
 public class Main {
@@ -29,6 +35,23 @@ public class Main {
 		// disable default constructor
 	}
 
+	/**
+	 * Entry point to logic of this module. Current module can
+	 * merge few validation profiles into 1 and transform validation
+	 * profile to html table. For merging profiles need to input
+	 * 'verapdf --merge'. For transforming validation profile to
+	 * html table need to input 'verapdf --transform-to-html'.
+	 *
+	 * <p>
+	 * In order to find more options must enter next args:
+	 * 'verapdf --help'.
+	 *
+	 * @param args arguments for defining arguments of module
+	 * @throws ParserConfigurationException
+	 * @throws IOException
+	 * @throws SAXException
+	 * @throws TransformerException
+	 */
 	public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException, TransformerException {
 		JCommander jCommander = new JCommander();
 		jCommander.addCommand(commandVeraPDF);

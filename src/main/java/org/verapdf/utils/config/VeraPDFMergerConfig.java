@@ -1,5 +1,9 @@
 package org.verapdf.utils.config;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 /**
  * @author Evgeniy Muravitskiy
  */
@@ -8,6 +12,8 @@ public class VeraPDFMergerConfig {
 	private Input inputPath;
 
 	private String outputPath;
+
+	private List<String> excluded;
 
 	private String model;
 
@@ -19,10 +25,12 @@ public class VeraPDFMergerConfig {
 
 	private String creatorTagValue;
 
-	public VeraPDFMergerConfig(Input inputPath, String outputPath, String model, String namespace,
-							   String nameTagValue, String descriptionTagValue, String creatorTagValue) {
+	private VeraPDFMergerConfig(Input inputPath, String outputPath, List<String> excluded,
+							   String model, String namespace, String nameTagValue,
+							   String descriptionTagValue, String creatorTagValue) {
 		this.inputPath = inputPath;
 		this.outputPath = outputPath;
+		this.excluded = excluded;
 		this.model = model;
 		this.namespace = namespace;
 		this.nameTagValue = nameTagValue;
@@ -36,6 +44,10 @@ public class VeraPDFMergerConfig {
 
 	public String getOutputPath() {
 		return outputPath;
+	}
+
+	public List<String> getExcluded() {
+		return excluded;
 	}
 
 	public String getModel() {
@@ -62,6 +74,7 @@ public class VeraPDFMergerConfig {
 
 		private Input inputPath;
 		private String outputPath;
+		private List<String> excluded;
 		private String model;
 		private String namespace;
 		private String nameTagValue;
@@ -79,6 +92,12 @@ public class VeraPDFMergerConfig {
 
 		public Builder outputPath(String outputPath) {
 			this.outputPath = outputPath;
+			return this;
+		}
+
+		public Builder excluded(List<String> excluded) {
+			this.excluded = new ArrayList<>(excluded.size());
+			Collections.copy(this.excluded, excluded);
 			return this;
 		}
 
@@ -108,8 +127,8 @@ public class VeraPDFMergerConfig {
 		}
 
 		public VeraPDFMergerConfig build() {
-			return new VeraPDFMergerConfig(inputPath, outputPath, model, namespace,
-					nameTagValue, descriptionTagValue, creatorTagValue);
+			return new VeraPDFMergerConfig(inputPath, outputPath, excluded, model,
+					namespace, nameTagValue, descriptionTagValue, creatorTagValue);
 		}
 	}
 }

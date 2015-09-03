@@ -80,6 +80,8 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <finalName>profile-merger</finalName>
+                    <appendAssemblyId>false</appendAssemblyId>
                     <archive>
                         <manifest>
                             <mainClass>org.verapdf.Main</mainClass>

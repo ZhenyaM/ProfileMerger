@@ -54,11 +54,11 @@ public final class ProfileMerger {
 		List<Node> rules = new ArrayList<>();
 		List<Node> variables = new ArrayList<>();
 
-		mergeProfiles(new File(config.getInputPath().getPath()), rules, variables);
+		mergeProfiles(new File(config.getInputPath().getPath()), rules, variables, config);
 		saveAll(config, rules, variables);
 	}
 
-	public static void mergeProfiles(File file, List<Node> rules, List<Node> variables)
+	public static void mergeProfiles(File file, List<Node> rules, List<Node> variables, VeraPDFMergerConfig config)
 			throws ParserConfigurationException, IOException, SAXException, TransformerException {
 		if (file.isFile()) {
 			getRulesAndVariables(file, rules, variables);
@@ -67,8 +67,8 @@ public final class ProfileMerger {
 			if (files != null) {
 				for (File currentFile : files) {
 					if (currentFile.isDirectory()) {
-						mergeProfiles(currentFile, rules, variables);
-					} else if (currentFile.isFile()) {
+						mergeProfiles(currentFile, rules, variables, config);
+					} else if (currentFile.isFile() && !isExcluded(currentFile, config)) {
 						getRulesAndVariables(currentFile, rules, variables);
 					}
 				}
@@ -78,6 +78,8 @@ public final class ProfileMerger {
 		}
 
 	}
+
+
 
 	private static void getRulesAndVariables(File file, List<Node> rules, List<Node> variables)
 			throws ParserConfigurationException, SAXException, IOException {
@@ -148,6 +150,12 @@ public final class ProfileMerger {
 
 	private static void getVariables(List<Node> variables, Node node) {
 		getElements(variables, node, VARIABLE, NAME_TAG);
+	}
+
+	private static boolean isExcluded(File file, VeraPDFMergerConfig config) throws IOException {
+		List<String> excluded = config.getExcluded();
+		return excluded.contains(file.getName()) || excluded.contains(file.getAbsolutePath()) ||
+				excluded.contains(file.getPath()) || excluded.contains(file.getCanonicalPath());
 	}
 
 	private static void saveAll(VeraPDFMergerConfig config,
