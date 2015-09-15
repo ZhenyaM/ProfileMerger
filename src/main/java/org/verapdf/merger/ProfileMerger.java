@@ -138,6 +138,7 @@ public final class ProfileMerger {
 			for (Node node : elements) {
 				String nodeAttr = node.getAttributes().getNamedItem(attrName).getNodeValue();
 				if (attribute.equals(nodeAttr)) {
+					logger.error(attrName + " duplicated: " + nodeAttr);
 					return true;
 				}
 			}
@@ -154,8 +155,12 @@ public final class ProfileMerger {
 
 	private static boolean isExcluded(File file, VeraPDFMergerConfig config) throws IOException {
 		List<String> excluded = config.getExcluded();
-		return excluded.contains(file.getName()) || excluded.contains(file.getAbsolutePath()) ||
+		boolean isExcluded = excluded.contains(file.getName()) || excluded.contains(file.getAbsolutePath()) ||
 				excluded.contains(file.getPath()) || excluded.contains(file.getCanonicalPath());
+		if (isExcluded) {
+			logger.error('\'' + file.getAbsolutePath() + '\'' + " is exclude from result profile.");
+		}
+		return isExcluded;
 	}
 
 	private static void saveAll(VeraPDFMergerConfig config,

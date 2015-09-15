@@ -96,8 +96,7 @@ public class VeraPDFMergerConfig {
 		}
 
 		public Builder excluded(List<String> excluded) {
-			this.excluded = new ArrayList<>(excluded.size());
-			Collections.copy(this.excluded, excluded);
+			this.excluded = excluded;
 			return this;
 		}
 

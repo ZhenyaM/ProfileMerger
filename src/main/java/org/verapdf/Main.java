@@ -79,6 +79,7 @@ public class Main {
 		builder
 				.inputPath(commandVeraPDF.getInputPath(), commandVeraPDF.isUrl())
 				.outputPath(commandVeraPDF.getOutputPath())
+				.excluded(commandVeraPDF.getExclude())
 				.model(commandVeraPDF.getModel())
 				.namespace(commandVeraPDF.getNamespace())
 				.nameTagValue(commandVeraPDF.getNameTagValue())
