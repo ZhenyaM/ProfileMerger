@@ -158,7 +158,7 @@ public final class ProfileMerger {
 		boolean isExcluded = excluded.contains(file.getName()) || excluded.contains(file.getAbsolutePath()) ||
 				excluded.contains(file.getPath()) || excluded.contains(file.getCanonicalPath());
 		if (isExcluded) {
-			logger.error('\'' + file.getAbsolutePath() + '\'' + " is exclude from result profile.");
+			logger.warn('\'' + file.getAbsolutePath() + '\'' + " is exclude from result profile.");
 		}
 		return isExcluded;
 	}
