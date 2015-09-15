@@ -7,7 +7,10 @@
         <html>
             <head>
                 <style type="text/css">
-                    tr {
+                    table {
+                        border-collapse: collapse;
+                        border-style: ridge;
+                        border-width: 3px;
                         text-align:center;
                         vertical-align:middle;
                     }
