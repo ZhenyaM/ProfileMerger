@@ -1,6 +1,8 @@
 package org.verapdf;
 
 import com.beust.jcommander.JCommander;
+import org.verapdf.entity.ValidationProfile;
+import org.verapdf.impl.ProfileImplementations;
 import org.verapdf.merger.ProfileMerger;
 import org.verapdf.transformer.HtmlTransformer;
 import org.verapdf.utils.commands.CommandProfileMerger;
@@ -52,12 +54,14 @@ public class Main {
 	 * @throws SAXException
 	 * @throws TransformerException
 	 */
-	public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException, TransformerException {
+	public static void main(String[] args) throws Exception {
 		JCommander jCommander = new JCommander();
 		jCommander.addCommand(commandVeraPDF);
 		jCommander.parse(args);
 
-		if (commandVeraPDF.isMerge()) {
+		if (commandVeraPDF.isListVersions()) {
+			listVersions();
+		} else if (commandVeraPDF.isMerge()) {
 			VeraPDFMergerConfig config = createConfigFromCliOptions();
 			ProfileMerger.mergeProfiles(config);
 		} else if (commandVeraPDF.isTransformToHTML()) {
@@ -68,23 +72,32 @@ public class Main {
 		}
 	}
 
+	private static void listVersions() {
+		for (ProfileImplementations value : ProfileImplementations.values()) {
+			// TODO : implement print of profile view
+			System.out.println(value);
+		}
+	}
+
 	private static VeraPDFTransformConfig getVeraPDFTransformConfig() {
 		return new VeraPDFTransformConfig(commandVeraPDF.getInputPath(),
-				commandVeraPDF.isUrl(), commandVeraPDF.getOutputPath());
+				commandVeraPDF.getOutputPath(), commandVeraPDF.getVersion());
 	}
 
 	private static VeraPDFMergerConfig createConfigFromCliOptions() {
 		VeraPDFMergerConfig.Builder builder = new VeraPDFMergerConfig.Builder();
 
 		builder
-				.inputPath(commandVeraPDF.getInputPath(), commandVeraPDF.isUrl())
-				.outputPath(commandVeraPDF.getOutputPath())
+				.inputPath(commandVeraPDF.getInputPath())
+				.outputPath(commandVeraPDF.getOutputPath().get(0))
 				.excluded(commandVeraPDF.getExclude())
-				.model(commandVeraPDF.getModel())
-				.namespace(commandVeraPDF.getNamespace())
 				.nameTagValue(commandVeraPDF.getNameTagValue())
 				.descriptionTagValue(commandVeraPDF.getDescriptionTagValue())
-				.creatorTagValue(commandVeraPDF.getCreatorTagValue());
+				.creatorTagValue(commandVeraPDF.getCreatorTagValue())
+				.flavour(commandVeraPDF.getFlavour())
+				.version(commandVeraPDF.getVersion())
+				.saveDuplicated(commandVeraPDF.isSaveDuplicated())
+				.pretty(commandVeraPDF.isSavePretty());
 
 		return builder.build();
 	}

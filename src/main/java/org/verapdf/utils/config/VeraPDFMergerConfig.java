@@ -1,44 +1,42 @@
 package org.verapdf.utils.config;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * @author Evgeniy Muravitskiy
  */
 public class VeraPDFMergerConfig {
 
-	private Input inputPath;
+	private final List<String> inputPath;
+	private final String outputPath;
+	private final List<String> excluded;
 
-	private String outputPath;
+	private final String nameTagValue;
+	private final String descriptionTagValue;
+	private final String creatorTagValue;
+	private final String flavour;
 
-	private List<String> excluded;
+	private final String version;
+	private final boolean saveDuplicated;
+	private final boolean pretty;
 
-	private String model;
-
-	private String namespace;
-
-	private String nameTagValue;
-
-	private String descriptionTagValue;
-
-	private String creatorTagValue;
-
-	private VeraPDFMergerConfig(Input inputPath, String outputPath, List<String> excluded,
-							   String model, String namespace, String nameTagValue,
-							   String descriptionTagValue, String creatorTagValue) {
+	private VeraPDFMergerConfig(List<String> inputPath, String outputPath, List<String> excluded,
+								String nameTagValue, String descriptionTagValue, String creatorTagValue,
+								String flavour, String version, boolean saveDuplicated, boolean pretty) {
 		this.inputPath = inputPath;
 		this.outputPath = outputPath;
 		this.excluded = excluded;
-		this.model = model;
-		this.namespace = namespace;
 		this.nameTagValue = nameTagValue;
 		this.descriptionTagValue = descriptionTagValue;
 		this.creatorTagValue = creatorTagValue;
+		this.flavour = flavour;
+		this.version = version.toUpperCase(Locale.US);
+		this.saveDuplicated = saveDuplicated;
+		this.pretty = pretty;
 	}
 
-	public Input getInputPath() {
+	public List<String> getInputPath() {
 		return inputPath;
 	}
 
@@ -48,14 +46,6 @@ public class VeraPDFMergerConfig {
 
 	public List<String> getExcluded() {
 		return excluded;
-	}
-
-	public String getModel() {
-		return model;
-	}
-
-	public String getNamespace() {
-		return namespace;
 	}
 
 	public String getNameTagValue() {
@@ -70,23 +60,39 @@ public class VeraPDFMergerConfig {
 		return creatorTagValue;
 	}
 
+	public String getFlavour() {
+		return this.flavour;
+	}
+
+	public boolean isPretty() {
+		return this.pretty;
+	}
+
+	public boolean isSaveDuplicated() {
+		return this.saveDuplicated;
+	}
+
+	public String getVersion() {
+		return this.version;
+	}
+
 	public static class Builder {
 
-		private Input inputPath;
+		private List<String> inputPath;
 		private String outputPath;
 		private List<String> excluded;
-		private String model;
-		private String namespace;
+
 		private String nameTagValue;
 		private String descriptionTagValue;
 		private String creatorTagValue;
+		private String flavour;
 
-		public Builder() {
+		private String version;
+		private boolean saveDuplicated;
+		private boolean pretty;
 
-		}
-
-		public Builder inputPath(String inputPath, boolean isURL) {
-			this.inputPath = new Input(inputPath, isURL);
+		public Builder inputPath(List<String> inputPath) {
+			this.inputPath = inputPath;
 			return this;
 		}
 
@@ -97,16 +103,6 @@ public class VeraPDFMergerConfig {
 
 		public Builder excluded(List<String> excluded) {
 			this.excluded = excluded;
-			return this;
-		}
-
-		public Builder model(String model) {
-			this.model = model;
-			return this;
-		}
-
-		public Builder namespace(String namespace) {
-			this.namespace = namespace;
 			return this;
 		}
 
@@ -125,9 +121,29 @@ public class VeraPDFMergerConfig {
 			return this;
 		}
 
+		public Builder flavour(String flavour) {
+			this.flavour = flavour;
+			return this;
+		}
+
+		public Builder version(String version) {
+			this.version = version;
+			return this;
+		}
+
+		public Builder saveDuplicated(boolean saveDuplicated) {
+			this.saveDuplicated = saveDuplicated;
+			return this;
+		}
+
+		public Builder pretty(boolean pretty) {
+			this.pretty = pretty;
+			return this;
+		}
+
 		public VeraPDFMergerConfig build() {
-			return new VeraPDFMergerConfig(inputPath, outputPath, excluded, model,
-					namespace, nameTagValue, descriptionTagValue, creatorTagValue);
+			return new VeraPDFMergerConfig(inputPath, outputPath, excluded, nameTagValue,
+					descriptionTagValue, creatorTagValue, flavour, version, saveDuplicated, pretty);
 		}
 	}
 }

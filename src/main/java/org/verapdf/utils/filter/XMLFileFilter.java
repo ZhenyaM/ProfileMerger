@@ -8,7 +8,7 @@ import java.io.FileFilter;
  */
 public class XMLFileFilter implements FileFilter {
 
-	public static final String FILTER = ".xml";
+	public static final String EXTENSION = ".xml";
 
 	private static XMLFileFilter INSTANCE;
 
@@ -16,15 +16,12 @@ public class XMLFileFilter implements FileFilter {
 
 	}
 
-	public static FileFilter getInstance() {
-		if (INSTANCE == null) {
-			INSTANCE = new XMLFileFilter();
-		}
-		return INSTANCE;
+	public synchronized static FileFilter getInstance() {
+		return INSTANCE == null ? INSTANCE = new XMLFileFilter() : INSTANCE;
 	}
 
 	@Override
 	public boolean accept(File file) {
-		return file.getName().endsWith(FILTER) || file.isDirectory();
+		return file.getName().endsWith(EXTENSION) || file.isDirectory();
 	}
 }

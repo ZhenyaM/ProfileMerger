@@ -20,28 +20,31 @@
                 <table border="1">
                     <tr>
                         <th>ID</th>
-                        <th>Name</th>
+                        <th width="13%">Name</th>
                         <th>Description</th>
                         <th>Type</th>
                         <th>Rule</th>
                     </tr>
-                    <xsl:for-each select="profilens:profile/profilens:rules/profilens:rule">
-                        <xsl:variable name="i" select="position()" />
+                    <xsl:for-each select="profilens:profile/rules/rule">
+                        <xsl:variable name="i" select="position()"/>
+                        <xsl:variable name="specification" select="string(id/@specification)"/>
+                        <xsl:variable name="clause" select="string(id/@clause)"/>
+                        <xsl:variable name="testNumber" select="string(id/@testNumber)"/>
                         <tr>
-                            <td style="width: 50px">
+                            <td>
                                 <xsl:value-of select="$i"/>
                             </td>
-                            <td style="width: 100px">
-                                <xsl:value-of select="@id"/>
+                            <td>
+                                <xsl:value-of select="concat($specification,'-',$clause,'-t',$testNumber)"/>
                             </td>
-                            <td style="width: 400px" align="left">
-                                <xsl:value-of select="profilens:description"/>
+                            <td>
+                                <xsl:value-of select="description"/>
                             </td>
-                            <td style="width: 200px">
+                            <td>
                                 <xsl:value-of select="@object"/>
                             </td>
-                            <td style="width: 800px">
-                                <xsl:value-of select="profilens:test"/>
+                            <td>
+                                <xsl:value-of select="test"/>
                             </td>
                         </tr>
                     </xsl:for-each>
